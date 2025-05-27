@@ -5,6 +5,13 @@ import React from 'react'
 
 const AddTransactionPage = async() => {
   const accounts = await getUserAccounts();
+  // const editId = searchParams?.edit;
+
+  let initialData = null;
+  // if (editId) {
+  //   const transaction = await getTransaction(editId);
+  //   initialData = transaction;
+  // }
 
   return (
     <div className='max-w-3xl mx-auto px-5'>

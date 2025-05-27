@@ -5,7 +5,10 @@ import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { request } from "@arcjet/next";
 import aj from "@/lib/arcjet";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
  const serializeAmount = (obj) => ({
     ...obj,
@@ -116,5 +119,71 @@ function calculateNextRecurringDate(startDate, interval) {
 
   return date;
 }
+
+export async function scanRecipt(file) {
+
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+
+    // Convert File to ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer();
+
+    // Convert ArrayBuffer to Base64
+    const base64String = Buffer.from(arrayBuffer).toString("base64");
+
+    const prompt = `Analyze this receipt image and extract the following information in JSON format:
+      - Total amount (just the number)
+      - Date (in ISO format)
+      - Description or items purchased (brief summary)
+      - Merchant/store name
+      - Suggested category (one of: housing,transportation,groceries,utilities,entertainment,food,shopping,healthcare,education,personal,travel,insurance,gifts,bills,other-expense )
+      
+      Only respond with valid JSON in this exact format:
+      {
+        "amount": number,
+        "date": "ISO date string",
+        "description": "string",
+        "merchantName": "string",
+        "category": "string"
+      }
+
+      If its not a recipt, return an empty object`;
+
+    const result = await model.generateContent([
+      {
+        inlineData: {
+          data: base64String,
+          mimeType: file.type,
+        },
+      },
+      prompt,
+    ]);
+
+    const response = await result.response;
+    const text = response.text();
+    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+
+
+    try {
+      const data = JSON.parse(cleanedText);
+      return {
+        amount: parseFloat(data.amount),
+        date: new Date(data.date),
+        description: data.description,
+        category: data.category,
+        merchantName: data.merchantName,
+      };
+    } catch (parseError) {
+        console.error("Error parsing JSON response:", parseError);
+        throw new Error("Invalid response format from Gemini"); 
+    }
+     
+  } catch (error) {
+      console.error("Error scanning receipt:", error);
+      throw new Error("Failed to scan receipt");
+  }
+}
+
+
 
 // Invalid `tx.transaction.create()` invocation in D:\study material\AI_Finance\finintel\.next\server\chunks\ssr\src_1a29f9._.js:493:57 490 const newBalance = account.balance.toNumber() + balanceChange; 491 // this transaction handle for prisma 492 const transaction = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["db"].$transaction(async (tx)=>{ → 493 const newTransaction = await tx.transaction.create({ data: { type: "EXPENSE", amount: 550, description: "Tuition Fees", date: new Date("2025-05-27T12:34:46.820Z"), accountId: "02e84da1-0cc9-4e7e-a763-e3376aadbdf7", category: "education", isRecurring: true, recurringInterval: "MONTHLY", userId: "d48d5107-d9b6-46f9-8509-ed4fab16c3f0", nextRecurringDate: new Date("Invalid Date") ~~~~~~~~~~~~~~~~~~~~~~~~ } }) Invalid value for argument `nextRecurringDate`: Provided Date object is invalid. Expected Date.

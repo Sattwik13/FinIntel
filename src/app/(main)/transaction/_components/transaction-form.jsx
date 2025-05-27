@@ -28,6 +28,7 @@ import { format } from "date-fns";
 import { Switch } from '@/components/ui/switch';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import ReciptScanner from './recipt-scanner';
 
 
 const AddTransactionForm = ({ accounts, categories }) => {
@@ -74,15 +75,6 @@ const AddTransactionForm = ({ accounts, categories }) => {
         transactionFn(formData);
     };
 
-    // useEffect(() => {
-    //     if(transactionResult?.success && transactionLoading) {
-    //         toast.success("Transaction created successfully");
-    //         reset();
-    //         router.push(`/account/${transactionResult.data.accountId}`);
-    //     }
-    // }, [transactionResult, transactionLoading]);
-
-
     useEffect(() => {
     if (transactionResult?.success && !transactionLoading) {
       toast.success(
@@ -99,10 +91,23 @@ const AddTransactionForm = ({ accounts, categories }) => {
         (category) => category.type === type
     )
 
+    const handleScanComplete= (scannedData) => {
+        // console.log(scannedData);
+        if(scannedData) {
+            setValue("amount", scannedData.amount.toString());
+            setValue("date", new Date(scannedData.date));
+            if(scannedData.description) {
+                setValue("description",  scannedData.description);
+            }
+            if(scannedData.category) {
+                setValue("category", scannedData.category);
+            }
+        }
+    }
   return (
     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         {/* AI Recipt Scanner */}
-
+        <ReciptScanner onScanComplete={handleScanComplete} />
       
         {/* Type */} 
         <div className="space-y-2">
