@@ -9,7 +9,7 @@ const aj = arcjet({
       mode: "LIVE",
       refillRate: 10, // 10 collections
       interval: 3600, // per hour
-      capacity: 10, // maximum burst capacity
+      capacity: 40, // maximum burst capacity
     }),
   ],
   onResult: (res) => {
