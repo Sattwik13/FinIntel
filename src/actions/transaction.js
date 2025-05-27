@@ -131,6 +131,7 @@ export async function scanRecipt(file) {
     // Convert ArrayBuffer to Base64
     const base64String = Buffer.from(arrayBuffer).toString("base64");
 
+    // that's prompt use for model's instruction
     const prompt = `Analyze this receipt image and extract the following information in JSON format:
       - Total amount (just the number)
       - Date (in ISO format)
