@@ -1,6 +1,6 @@
 "use client";
 
-import { createTransaction } from '@/actions/transaction';
+import { createTransaction, updateTransaction } from '@/actions/transaction';
 import { transactionSchema } from '@/app/lib/schema';
 import useFetch from '@/hooks/use-fetch';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,14 +26,21 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from '@/lib/utils';
 import { format } from "date-fns";
 import { Switch } from '@/components/ui/switch';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import ReciptScanner from './recipt-scanner';
 
 
-const AddTransactionForm = ({ accounts, categories }) => {
+const AddTransactionForm = ({
+     accounts,
+     categories,
+     editMode = false,
+     initialData = null 
+    }) => {
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const editId = searchParams.get("edit");
 
     const {
         register,
@@ -45,7 +52,21 @@ const AddTransactionForm = ({ accounts, categories }) => {
         reset
      } = useForm({
         resolver: zodResolver(transactionSchema),
-        defaultValues: {
+        defaultValues:
+          editMode && initialData
+          ? {
+            type: initialData.type,
+            amount: initialData.amount.toString(),
+            description: initialData.description,
+            accountId: initialData.accountId,
+            category: initialData.category,
+            date: new Date(initialData.date),
+            isRecurring: initialData.isRecurring,
+            ...(initialData.recurringInterval && {
+              recurringInterval: initialData.recurringInterval,
+            }),
+          } 
+          : {
             type: "EXPENSE",
             amount: "",
             description: "",
@@ -59,7 +80,7 @@ const AddTransactionForm = ({ accounts, categories }) => {
         loading: transactionLoading,
         fn: transactionFn,
         data: transactionResult 
-    } = useFetch(createTransaction)
+    } = useFetch(editMode ? updateTransaction : createTransaction)
 
     // for watch and use 
     const type = watch("type");
@@ -72,20 +93,24 @@ const AddTransactionForm = ({ accounts, categories }) => {
             amount: parseFloat(data.amount),
         };
 
-        transactionFn(formData);
+        if(editMode) {
+          transactionFn(editId, formData);
+        } else {
+            transactionFn(formData);
+        }
     };
 
     useEffect(() => {
     if (transactionResult?.success && !transactionLoading) {
       toast.success(
-        // editMode
-        //   ? "Transaction updated successfully"
-           "Transaction created successfully"
+        editMode
+          ? "Transaction updated successfully"
+          : "Transaction created successfully"
       );
       reset();
       router.push(`/account/${transactionResult.data.accountId}`);
     }
-  }, [transactionResult, transactionLoading]);
+  }, [transactionResult, transactionLoading, editMode]);
 
     const filteredCategories = categories.filter(
         (category) => category.type === type
@@ -107,7 +132,7 @@ const AddTransactionForm = ({ accounts, categories }) => {
   return (
     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         {/* AI Recipt Scanner */}
-        <ReciptScanner onScanComplete={handleScanComplete} />
+        {!editMode && <ReciptScanner onScanComplete={handleScanComplete} />}
       
         {/* Type */} 
         <div className="space-y-2">
@@ -295,7 +320,16 @@ const AddTransactionForm = ({ accounts, categories }) => {
             Cancel
           </Button>
           <Button type="submit" className="w-full" disabled={transactionLoading}>
-            Create Transaction
+            {transactionLoading ? (
+                <>
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  {editMode ? "Updating..." : "Creating..."}
+                </>
+            ) : editMode ? (
+                "Update Transaction"
+            ) : (
+                "Create Transaction"
+            )}
           </Button>
         </div>
 

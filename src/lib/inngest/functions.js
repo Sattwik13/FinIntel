@@ -109,8 +109,9 @@ function isNewMonth(lastAlertDate, currentDate) {
     );
 }
 
+// Trigger recurring transactions with batching
 export const triggerRecurringTransactions = inngest.createFunction({
-  id: "trigger-recurring-transactions",
+  id: "trigger-recurring-transactions", // Unique Id
   name: "Trigger Recurring Transactions",
 },{cron:"0 0 * * *"}, // --- gpt cmd-- give me a cron expression that execute daily at midnight
 async({ step }) =>{
