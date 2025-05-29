@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { currentUser } from '@clerk/nextjs/server';
 import { Button } from '@/components/ui/button';
 import { Check, Pencil, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
