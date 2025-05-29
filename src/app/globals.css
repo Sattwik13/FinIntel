@@ -125,7 +125,9 @@ html {
 
 @layer utilities{
   .gradient{
-    @apply bg-gradient-to-br from-blue-600 to-purple-600;
+    @apply bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-700;
+
+
   }
 
   .gradient-title{
@@ -165,3 +167,5 @@ html {
   background-size:  200% 200%;
   animation: gradientMove 3s ease infinite;
 }
+
+

@@ -359,7 +359,7 @@ export function TransactionTable({ transactions }) {
                   <TableCell>
                     {format(new Date(transaction.date), "PP")}
                   </TableCell>
-                  <TableCell>{transaction.description}</TableCell>
+                  <TableCell><span className="p-1 rounded-md bg-slate-100">{transaction.description}</span></TableCell>
                   <TableCell className="capitalize">
                     <span
                       style={{

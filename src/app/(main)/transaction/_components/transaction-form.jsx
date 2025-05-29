@@ -314,12 +314,12 @@ const AddTransactionForm = ({
           <Button
             type="button"
             varient="outline"
-            className="w-full"
+            className="w-full bg-gradient-to-br from-emerald-600 via-teal-800 to-blue-00 hover:bg-emerald-600"
             onClick={() =>router.back()}
             >
             Cancel
           </Button>
-          <Button type="submit" className="w-full" disabled={transactionLoading}>
+          <Button type="submit" className="w-full bg-gradient-to-br from-emerald-600 via-teal-800 to-blue-00 hover:bg-emerald-600" disabled={transactionLoading}>
             {transactionLoading ? (
                 <>
                   <Loader2 className='mr-2 h-4 w-4 animate-spin' />

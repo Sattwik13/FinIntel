@@ -10,7 +10,7 @@ const Header = async() => {
   await checkUser();
   
   return (
-    <div className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
+    <div className="fixed top-0 w-full bg-teal-50 backdrop-blur-md z-50 border-b">
 
       <nav className="container mx-auto px-2 py-4 flex items-center justify-between">
         <Link href="/">
@@ -28,14 +28,14 @@ const Header = async() => {
         <SignedIn>
            <Link href={"/dashboard"}
             className="text-gray-600 hover:text-blue-600 flex items-center gap-2">
-            <Button varient="outline">
+            <Button varient="outline" className="bg-gradient-to-br from-emerald-600 via-teal-800 to-blue-00 hover:bg-emerald-600">
               <LayoutDashboard size={18} />
              <span className="hidden md:inline">Dashboard</span>
             </Button>
            </Link> 
 
            <Link href={"/transaction/create"}>
-            <Button  className="flex items-center gap-2">
+            <Button  className="flex items-center gap-2 bg-gradient-to-br from-emerald-600 via-teal-800 to-blue-00 hover:bg-emerald-600">
               <PenBox size={18} />
              <span className="hidden md:inline">Transaction</span>
             </Button>
@@ -44,13 +44,13 @@ const Header = async() => {
 
         <SignedOut>
           <SignInButton forceRedirectUrl="/dashboard">
-            <Button varient="outline">Login</Button>
+            <Button varient="outline" className="bg-gradient-to-br from-emerald-600 via-teal-800 to-blue-00 hover:bg-emerald-600">Login</Button>
           </SignInButton>
           {/* <SignUpButton /> */}
         </SignedOut>
 
         <SignedIn>
-          <UserButton appearance={{
+          <UserButton className="bg-gradient-to-br from-emerald-600 via-teal-800 to-blue-00 hover:bg-emerald-600" appearance={{
             elements: {
               avatarBox: "w-10 h-10"
             }

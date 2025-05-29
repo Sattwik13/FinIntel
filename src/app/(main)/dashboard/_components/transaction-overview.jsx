@@ -51,7 +51,7 @@ const DashboardOverview = ({ accounts, transactions }) => {
   // Get recent transactions (last 5)
   const recentTransactions = accountTransactions
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 5);
+    .slice(0, 7);
 
   // Calculate expense breakdown for current month
   const currentDate = new Date();
@@ -84,8 +84,8 @@ const DashboardOverview = ({ accounts, transactions }) => {
    
    return (
     <div className='grid gap-4 md:grid-cols-2'>
-       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+       <Card className="bg-teal-50">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 ">
         <CardTitle className="text-base font-normal">
             Recent Transactions
           </CardTitle>
@@ -152,9 +152,9 @@ const DashboardOverview = ({ accounts, transactions }) => {
        </Card>
 
 
-       <Card>
+       <Card className="bg-teal-50">
         <CardHeader>
-            <CardTitle className="p-0 pb-5">Monthly Expense Breakdown</CardTitle>
+            <CardTitle className="p-1 pb-5 text-gray-600">Monthly Expense Breakdown</CardTitle>
         </CardHeader>
         <CardContent className="p-0 pb-5">
           {pieChartData.length === 0 ? (
@@ -162,7 +162,7 @@ const DashboardOverview = ({ accounts, transactions }) => {
               No expenses this month
             </p>
           ) : (
-            <div className="h-[300px]">
+            <div className="h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
