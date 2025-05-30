@@ -120,6 +120,49 @@ export default function EmailTemplate({
       ); 
     }
   }
+
+export function EmailTemplate1({
+
+    userName = "",
+    type = "budget-alert",
+    data = {}
+}) {
+    if (type === "budget-alert") {
+      return (
+       <Html>
+        <Head />
+        <Preview>Budget Alert</Preview>
+        <Body style={styles.body}>
+          <Container style={styles.container}>
+            <Heading style={styles.title}>Budget Alert</Heading>
+            <Text style={styles.percent}>Hello {userName},</Text>
+            <Text style={styles.text}>
+              You&rsquo;ve used <span style={styles.percent}>{data?.percentageUsed.toFixed(1)}%</span> of your
+              monthly budget.
+            </Text>
+            <Section style={styles.statsContainer}>
+              <div style={styles.stat}>
+                <Text style={styles.text}>Budget Amount</Text>
+                <Text style={styles.heading}>${data?.budgetAmount}</Text>
+              </div>
+              <div style={styles.stat}>
+                <Text style={styles.text}>Spent So Far</Text>
+                <Text style={styles.heading}>${data?.totalExpenses}</Text>
+              </div>
+              <div style={styles.stat}>
+                <Text style={styles.text}>Remaining</Text>
+                <Text style={styles.heading}>
+                  ${data?.budgetAmount - data?.totalExpenses}
+                </Text>
+              </div>
+            </Section>
+          </Container>
+        </Body>
+       </Html>
+      ); 
+    }
+  }
+
 const styles = {
     body: {
         backgroundColor: "#111111", // slate-900

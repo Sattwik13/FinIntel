@@ -1,7 +1,7 @@
 import { sendEmail } from "@/actions/send-email";
 import { db } from "../prisma";
 import { inngest } from "./client";
-import EmailTemplate from "../../../emails/template";
+import EmailTemplate, { EmailTemplate1 } from "../../../emails/template";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 //  Budget Alerts with Event Batching
@@ -78,7 +78,7 @@ export const checkBudgetAlert = inngest.createFunction(
               await sendEmail({
                 to: budget.user.email,
                 subject: `Budget Alert for ${defaultAccount.name}`,
-                react: EmailTemplate({
+                react: EmailTemplate1({
                     userName: budget.user.name,
                     type: "budget-alert",
                     data: {
@@ -254,7 +254,7 @@ function isTransactionDue(transaction) {
   return nextDue <= today;
 }
 
-
+// For generate monthly reports 
 export const generateMonthlyReports = inngest.createFunction(
   {
     id: "generate-monthly-reports",
