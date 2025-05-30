@@ -1,7 +1,7 @@
 import { sendEmail } from "@/actions/send-email";
 import { db } from "../prisma";
 import { inngest } from "./client";
-import EmailTemplate, { EmailTemplate1 } from "../../../emails/template";
+import EmailTemplate from "../../../emails/template";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // 3. Budget Alerts with Event Batching
@@ -61,7 +61,7 @@ export const checkBudgetAlert = inngest.createFunction(
           await sendEmail({
             to: budget.user.email,
             subject: `Budget Alert for ${defaultAccount.name}`,
-            react: EmailTemplate1({
+            react: EmailTemplate({
               userName: budget.user.name,
               type: "budget-alert",
               data: {
