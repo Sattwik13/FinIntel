@@ -6,8 +6,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 //  Budget Alerts with Event Batching
 export const checkBudgetAlert = inngest.createFunction(
-  { name: "hello-world" },
-  { cron: "0 */6 * * *" },
+  { name: "Check Budget Alerts" },
+  { cron: "0 */6 * * *" }, // Every 6 hours
   async ({ step }) => {
     const budgets = await step.run("fetch-budgets", async () => {
         return await db.budget.findMany({
@@ -30,20 +30,20 @@ export const checkBudgetAlert = inngest.createFunction(
         if(!defaultAccount) continue; // Skip if no default account
 
         await step.run(`check-budget-${budget.id}`, async () => {
-            // const startDate = new Date();
-            // startDate.setDate(1);  // Start of Current month
+            const startDate = new Date();
+            startDate.setDate(1);  // Start of Current month
 
-            const currentDate = new Date();
-            const startOfMonth = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            1
-            );
-            const endOfMonth = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() + 1,
-            0
-            );
+            // const currentDate = new Date();
+            // const startOfMonth = new Date(
+            // currentDate.getFullYear(),
+            // currentDate.getMonth(),
+            // 1
+            // );
+            // const endOfMonth = new Date(
+            // currentDate.getFullYear(),
+            // currentDate.getMonth() + 1,
+            // 0
+            // );
 
             // Calculate total expenses for the default account only
             const expenses = await db.transaction.aggregate({
@@ -52,9 +52,9 @@ export const checkBudgetAlert = inngest.createFunction(
                     accountId: defaultAccount.id, // Only consider default account
                     type: "EXPENSE",
                     date: {
-                        // gte: startDate,
-                        gte: startOfMonth,
-                        lte: endOfMonth,
+                        gte: startDate,
+                        // gte: startOfMonth,
+                        // lte: endOfMonth,
                     },
                 },
                 _sum: {
@@ -66,7 +66,7 @@ export const checkBudgetAlert = inngest.createFunction(
             const budgetAmount = budget.amount;
             const percentageUsed = (totalExpenses / budgetAmount) * 100;
 
-            console.log(percentageUsed);
+            // console.log(percentageUsed);
             
             
             // Check if we should send an alert
@@ -96,7 +96,6 @@ export const checkBudgetAlert = inngest.createFunction(
                 where: { id: budget.id },
                 data: { lastAlertSent: new Date() }
               });
-
             }    
         });
     }
