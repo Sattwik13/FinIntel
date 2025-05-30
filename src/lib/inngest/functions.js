@@ -5,7 +5,7 @@ import EmailTemplate, { EmailTemplate1 } from "../../../emails/template";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // 3. Budget Alerts with Event Batching
-export const checkBudgetAlerts = inngest.createFunction(
+export const checkBudgetAlert = inngest.createFunction(
   { name: "Check Budget Alerts" },
   { cron: "0 */6 * * *" }, // Every 6 hours
   async ({ step }) => {
