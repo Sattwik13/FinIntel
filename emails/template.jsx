@@ -8,7 +8,6 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { Percent } from "lucide-react";
 import * as React from "react";
 
 export default function EmailTemplate({
@@ -86,7 +85,7 @@ export default function EmailTemplate({
       );
     }
 
-    if (type === "budget-alert") {
+    else if (type === "budget-alert") {
       return (
        <Html>
         <Head />
