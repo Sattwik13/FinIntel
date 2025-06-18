@@ -62,9 +62,8 @@ FinIntel is an AI-driven personal and business finance management platform that 
 ---
 
 ### 🌐 Modern Frontend
-- Built using **Next.js App Router (v13+)** with layouts and parallel routing
+- Built using **Next.js App Router** with layouts and parallel routing
 - Global styling using **Tailwind CSS**
-- Light/dark theme ready
 - Custom pages:
   - Home (`/`)
   - 404 Not Found (`/not-found`)
@@ -118,7 +117,7 @@ FinIntel is an AI-driven personal and business finance management platform that 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/finintel.git
+git clone https://github.com/Sattwik13/FinIntel
 cd finintel
 
 # Install dependencies
@@ -133,3 +132,8 @@ npx prisma generate
 
 # Run the development server
 npm run dev
+```
+
+## 👨‍💻 Author
+- **Sattwik Manna**
+- **GitHub:** @sattwik13
