@@ -1,6 +1,6 @@
 # 💸 FinIntel — AI-Powered Finance Management Platform
 
-FinIntel is an AI-driven personal and business finance management platform that helps users track spending, set budgets, and gain intelligent insights for smarter financial decisions. Built with Next.js, Tailwind CSS, and OpenAI-powered analytics.
+FinIntel is an AI-driven personal and business finance management platform that helps users track spending, set budgets, and gain intelligent insights for smarter financial decisions. Built with **Next.js**, **Tailwind CSS**, **ShadCN UI**, **Clerk**, **Arcjet** and **OpenAI-powered** analytics Using Google_Gemini-1.5-Flash.
 
 ---
 
@@ -10,6 +10,10 @@ FinIntel is an AI-driven personal and business finance management platform that 
 - Secure sign-in and sign-up flows using **Clerk**
 - Supports multiple providers and JWT-based session management
 - Dynamic route protection using **Arcjet**
+
+---
+### 🔑 Authorization System
+- Bot Protection and Rate Limiting Based using **Arcjet**
 
 ---
 
@@ -26,6 +30,7 @@ FinIntel is an AI-driven personal and business finance management platform that 
 ### 🧾 Smart Transaction Management
 - Full **CRUD operations** for transactions
 - Categorization of transactions (e.g., groceries, travel, rent)
+- Add Recurring(Weekly, Monthly, Yearly) Transaction
 - 📷 **Receipt Scanner Integration**:
   - Upload scanned bills/images
   - Extract and autofill transaction data (Using `Gemini-1.5-flash`)
@@ -35,7 +40,7 @@ FinIntel is an AI-driven personal and business finance management platform that 
 ### 🏦 Account Overview
 - Create, manage multiple accounts (e.g., bank, wallet, cash)
 - View **account-specific transactions** and **category summaries**
-- Datewise income-expense visualization with bars
+- Date-wise income-expense visualization with bars
 
 ---
 
